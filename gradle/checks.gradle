@@ -1,0 +1,28 @@
+// Checkstyle
+checkstyle {
+    ignoreFailures = true
+    configFile = rootProject.file('quality/checkstyle.xml')
+}
+
+// Findbugs
+findbugs {
+    ignoreFailures = true
+}
+
+// Cobertura
+/*
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageExcludes = ['.*com.tgt.esv.base.logging.ApiLogRequestWrapper.*',
+                        '.*com.tgt.esv.base.logging.ApiLogResponseWrapper.*']
+    coverageIgnoreTrivial = true
+}
+*/
+
+configurations.all {
+    resolutionStrategy {
+        // Cobertura includes an ASM version that can't handle Java 8, ASM 5.0.3 handles Java8
+        force 'org.ow2.asm:asm:5.0.3'
+        forcedModules = [ 'org.ow2.asm:asm:5.0.3' ]
+    }
+}

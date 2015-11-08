@@ -1,0 +1,37 @@
+//source files
+sourceSets {
+    test {
+        groovy {
+            srcDir 'src/test/unit/groovy'
+        }
+    }
+    testFunctional {
+        groovy {
+            srcDir 'src/test/functional/groovy'
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+    }
+}
+
+//provide dependency scopes
+configurations {
+    testIntegrationCompile.extendsFrom testCompile
+    testIntegrationRuntime.extendsFrom testRuntime
+    testFunctionalCompile.extendsFrom testCompile
+    testFunctionalCompile.extendsFrom testRuntime
+}
+
+//all tests include this
+tasks.withType(Test) {
+    systemProperties = System.properties
+}
+
+//functional test
+task testFunctional(type:Test) {
+    description = "Run integration tests (located in src/test/functional/...)."
+    testClassesDir = sourceSets.testFunctional.output.classesDir
+    classpath = sourceSets.testFunctional.runtimeClasspath
+}
+
+testFunctional.reports.html.destination = file("$buildDir/reports/test/functional")
