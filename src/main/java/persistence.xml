@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit">
+        <class>com.guidestone.wifi.streamer.entities.AnalyticsEntity</class>
+        <class>com.guidestone.wifi.streamer.entities.MediaEntity</class>
+        <class>com.guidestone.wifi.streamer.entities.UserEntity</class>
+        <properties>
+            <property name="eclipselink.jdbc.url"
+                      value="jdbc:mysql://wifistreamer.c9wpmmcixw9f.us-west-2.rds.amazonaws.com:3306/wifistreamer"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.jdbc.user"/>
+            <property name="eclipselink.jdbc.password"/>
+            <property name="hibernate.connection.url"
+                      value="jdbc:mysql://wifistreamer.c9wpmmcixw9f.us-west-2.rds.amazonaws.com:3306/wifistreamer"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username"/>
+            <property name="hibernate.connection.password"/>
+            <property name="openjpa.ConnectionURL"
+                      value="jdbc:mysql://wifistreamer.c9wpmmcixw9f.us-west-2.rds.amazonaws.com:3306/wifistreamer"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="openjpa.ConnectionUserName"/>
+            <property name="openjpa.ConnectionPassword"/>
+            <property name="toplink.jdbc.url"
+                      value="jdbc:mysql://wifistreamer.c9wpmmcixw9f.us-west-2.rds.amazonaws.com:3306/wifistreamer"/>
+            <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="toplink.jdbc.user"/>
+            <property name="toplink.jdbc.password"/>
+        </properties>
+    </persistence-unit>
+</persistence>

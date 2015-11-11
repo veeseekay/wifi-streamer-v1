@@ -26,7 +26,7 @@ import java.util.List;
 
 //@EnableWebMvc
 @RestController
-@RequestMapping("/wifistreamer/v1/media")
+@RequestMapping("/api/wifistreamer/v1/media")
 @EnableAutoConfiguration
 @ComponentScan
 public class MediaController {

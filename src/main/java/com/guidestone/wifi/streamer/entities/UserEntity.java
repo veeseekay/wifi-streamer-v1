@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Created by z013w8c on 11/1/15.
+ * Created by z013w8c on 11/11/15.
  */
 @Entity
 @Table(name = "user", schema = "", catalog = "wifistreamer")

@@ -26,7 +26,7 @@ import java.util.List;
 
 //@EnableWebMvc
 @RestController
-@RequestMapping("/wifistreamer/v1/users")
+@RequestMapping("/api/wifistreamer/v1/users")
 @EnableAutoConfiguration
 @ComponentScan
 public class UsersController {
