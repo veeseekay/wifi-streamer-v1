@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<link href="../static/tabs.css" rel="stylesheet"/>
 <head>
     <title>Upload media</title>
     <script
@@ -16,18 +18,23 @@
                                                 .children().length - 1;
                                 $('#fileTable')
                                         .append(
-                                        '<tr><td>'
-                                        + '<input type="file" name="files['+ fileIndex +']" />'
+                                        '<tr><td><br>'
                                         + ' Language: <input type="text" name="language['+ fileIndex +']">'
                                         + ' Genre: <input type="text" name="genre['+ fileIndex +']">'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="videos">video'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="movies">movie'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="audios">audio'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="tv">tv'
+                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="videos"> video'
+                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="movies"> movie'
+                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="audios"> audio'
+                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="tv"> tv'
+                                        + '<input type="file" name="files['+ fileIndex +']" />'
                                         + '</td></tr>');
                             });
 
                 });
+    </script>
+    <script>
+        $(function(){
+            $("#fileupload").load("fileupload.html");
+        });
     </script>
     <style type="text/css">
         body {
@@ -35,43 +42,77 @@
             url('http://cdn3.crunchify.com/wp-content/uploads/2013/03/Crunchify.bg_.300.png');
         }
     </style>
+    <script>
+        $(function(){
+            $("#fileupload").load("fileupload.html");
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-<br>
-<br>
-<div align="center">
-    <h1>Upload Media</h1>
 
-    <form method="post" th:action="@{/upload}"
-               modelAttribute="uploadForm" enctype="multipart/form-data">
+<div class="container">
+    <h2>wifi Streamer</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+        <li><a data-toggle="tab" href="#analytics">Analytics</a></li>
+        <ul class="nav navbar-nav navbar-right">
+            <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">Logout</a>
+        </ul>
+    </ul>
 
-        <table id="fileTable">
-            <tr>
-                <td><input name="files[0]" type="file" />
-                    Language: <input type="text" name="language[0]">
-                    Genre: <input type="text" name="genre[0]">
-                    <INPUT TYPE="radio" NAME="radios[0]" VALUE="videos">video
-                    <INPUT TYPE="radio" NAME="radios[0]" VALUE="movies">movie
-                    <INPUT TYPE="radio" NAME="radios[0]" VALUE="audios">audio
-                    <INPUT TYPE="radio" NAME="radios[0]" VALUE="tv">tv
-                </td>
-            </tr>
-            <tr>
-                <td><input name="files[1]" type="file" />
-                    Language: <input type="text" name="language[1]">
-                    Genre: <input type="text" name="genre[1]">
-                    <INPUT TYPE="radio" NAME="radios[1]" VALUE="videos">video
-                    <INPUT TYPE="radio" NAME="radios[1]" VALUE="movies">movie
-                    <INPUT TYPE="radio" NAME="radios[1]" VALUE="audios">audio
-                    <INPUT TYPE="radio" NAME="radios[1]" VALUE="tv">tv
-                </td>
-            </tr>
-        </table>
-        <br />
-        <input type="submit" value="Upload" />
-        <input id="addFile" type="button" value="Add File" />
-    </form>
-    <br />
+    <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <div align="center">
+                <h1>Upload Media</h1>
+
+                <form method="post" th:action="@{/upload}"
+                      modelAttribute="uploadForm" enctype="multipart/form-data">
+
+                    <table id="fileTable">
+                        <tr>
+                            <td>
+                                <br>
+                                Language: <input type="text" name="language[0]">
+                                Genre: <input type="text" name="genre[0]">
+                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="videos"> video
+                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="movies"> movie
+                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="audios"> audio
+                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="tv"> tv
+                                <input name="files[0]" type="file" />
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Language: <input type="text" name="language[1]">
+                                Genre: <input type="text" name="genre[1]">
+                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="videos"> video
+                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="movies"> movie
+                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="audios"> audio
+                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="tv"> tv
+                                <input name="files[1]" type="file" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <input type="submit" value="Upload" />
+                    <input id="addFile" type="button" value="Add File" />
+                </form>
+                <br />
+            </div>
+        </div>
+        <div id="analytics" class="tab-pane fade">
+            <h3>TBD</h3>
+            <p>Tyring to get some analytics data</p>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

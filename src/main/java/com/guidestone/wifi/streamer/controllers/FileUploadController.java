@@ -1,9 +1,9 @@
 package com.guidestone.wifi.streamer.controllers;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
+import com.guidestone.wifi.streamer.entities.MediaEntity;
 import com.guidestone.wifi.streamer.model.MediaUpload;
+import com.guidestone.wifi.streamer.services.MediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,49 +28,17 @@ public class FileUploadController {
     @Autowired
     private AmazonS3 amazonS3;
 
-    private @Value("${s3.bucket}")
-    String bucket;
+    @Value("${s3.bucket}")
+    private String bucket;
 
-    @RequestMapping(value="/api/upload", method=RequestMethod.POST)
-    public @ResponseBody
-    String handleFileUpload(@RequestParam("radios") String type,
-            @RequestParam("file") MultipartFile file){
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(file.getOriginalFilename())));
-                stream.write(bytes);
-                stream.close();
-
-                //ObjectListing objList = amazonS3.listObjects(bucket);
-
-                /*for (S3ObjectSummary summary:objList.getObjectSummaries()) {
-                    LOG.info("retrieving " + summary.getBucketName());
-                    LOG.info("retrieving " + summary.getKey());
-                }*/
-
-                TransferManager transferManager = new TransferManager(this.amazonS3);
-                Upload upload = transferManager.upload(bucket, type + "/" + file.getOriginalFilename(), new File(file.getOriginalFilename()));
-                LOG.info(upload.waitForUploadResult().getBucketName());
-
-                // delete
-                new File(file.getOriginalFilename()).delete();
-
-                return "You successfully uploaded " + file.getName() + "!";
-
-            } catch (Exception e) {
-                return "You failed to upload " + file.getName() + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + file.getName() + " because the file was empty.";
-        }
-    }
+    @Autowired
+    MediaService mediaService;
 
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public String uploadMedia(@ModelAttribute("uploadForm") MediaUpload uploadForm,
             Model model){
 
+        List<MediaEntity> mediaEntities = new ArrayList<>();
         List<MultipartFile> crunchifyFiles = uploadForm.getFiles();
         List<String> radios = uploadForm.getRadios();
         List<String> genre = uploadForm.getGenre();
@@ -96,11 +60,20 @@ public class FileUploadController {
                     InputStream fileInputStream = null;
                     try {
 
-                        fileInputStream = file.getInputStream();
-                        TransferManager transferManager = new TransferManager(this.amazonS3);
-                        Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
-                        LOG.info(upload.waitForUploadResult().getBucketName());
+                        MediaEntity mediaEntity = new MediaEntity();
+                        mediaEntity.setMediaGenre(language.get(i));
+                        mediaEntity.setMediaGenre(genre.get(i));
+                        mediaEntity.setMediaLocation(bucket + "/" + radios.get(i) + "/" + file.getOriginalFilename());
+                        mediaEntity.setTitle(file.getOriginalFilename());
+                        mediaEntity.setMediaCategory(radios.get(i));
 
+                        //fileInputStream = file.getInputStream();
+                       // TransferManager transferManager = new TransferManager(this.amazonS3);
+                        //Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
+                       // LOG.info(upload.waitForUploadResult().getBucketName());
+
+
+                        mediaEntities.add(mediaEntity);
                         LOG.info("successfully uploaded " + file.getName() + "!");
 
                     } catch (Exception e) {
@@ -117,6 +90,7 @@ public class FileUploadController {
                 }
             }
             i++;
+            mediaService.addMedia(mediaEntities);
         }
         return "landing";
     }
