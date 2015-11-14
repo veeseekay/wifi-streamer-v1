@@ -16,6 +16,7 @@ public class UserEntity {
     private String userName;
     private String passwd;
     private String type;
+    private String age;
 
     @Id
     @Column(name = "id")
@@ -45,6 +46,16 @@ public class UserEntity {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    @Basic
+    @Column(name = "age")
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     @Basic

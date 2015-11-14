@@ -27,6 +27,10 @@ public class MediaService {
         return mediaRepository.findAll(pageable);
     }
 
+    public List<MediaEntity> getMedia() {
+        return mediaRepository.findAll();
+    }
+
     public Object addMedia(List<MediaEntity> media) {
         return mediaRepository.save(media);
     }

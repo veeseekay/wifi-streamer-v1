@@ -1,8 +1,11 @@
 package com.guidestone.wifi.streamer.controllers;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.guidestone.wifi.streamer.entities.MediaEntity;
 import com.guidestone.wifi.streamer.model.MediaUpload;
+import com.guidestone.wifi.streamer.services.JsonEntryService;
 import com.guidestone.wifi.streamer.services.MediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,9 @@ public class FileUploadController {
 
     @Autowired
     MediaService mediaService;
+
+    @Autowired
+    JsonEntryService jsonEntryService;
 
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public String uploadMedia(@ModelAttribute("uploadForm") MediaUpload uploadForm,
@@ -67,10 +73,10 @@ public class FileUploadController {
                         mediaEntity.setTitle(file.getOriginalFilename());
                         mediaEntity.setMediaCategory(radios.get(i));
 
-                        //fileInputStream = file.getInputStream();
-                       // TransferManager transferManager = new TransferManager(this.amazonS3);
-                        //Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
-                       // LOG.info(upload.waitForUploadResult().getBucketName());
+                        fileInputStream = file.getInputStream();
+                        TransferManager transferManager = new TransferManager(this.amazonS3);
+                        Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
+                        LOG.info(upload.waitForUploadResult().getBucketName());
 
 
                         mediaEntities.add(mediaEntity);
@@ -91,6 +97,8 @@ public class FileUploadController {
             }
             i++;
             mediaService.addMedia(mediaEntities);
+            LOG.info("calling async");
+            jsonEntryService.updateMediaJson();
         }
         return "landing";
     }
