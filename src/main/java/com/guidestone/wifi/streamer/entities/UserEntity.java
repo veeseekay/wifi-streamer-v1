@@ -6,13 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by z013w8c on 11/11/15.
- */
 @Entity
 @Table(name = "user", schema = "", catalog = "wifistreamer")
 public class UserEntity {
-    private int id;
+    private double id;
     private String userName;
     private String passwd;
     private String type;
@@ -20,11 +17,11 @@ public class UserEntity {
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public double getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(double id) {
         this.id = id;
     }
 
@@ -85,7 +82,11 @@ public class UserEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(id);
+        result = (int) (temp ^ (temp >>> 32));
+
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (passwd != null ? passwd.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);

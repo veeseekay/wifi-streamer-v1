@@ -26,7 +26,7 @@ import java.util.List;
 
 //@EnableWebMvc
 @RestController
-@RequestMapping("/wifistreamer/v1/analytics")
+@RequestMapping("/api/wifistreamer/v1/analytics")
 @EnableAutoConfiguration
 @ComponentScan
 public class AnalyticsController {
