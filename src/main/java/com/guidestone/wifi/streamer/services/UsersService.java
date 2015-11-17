@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,17 +24,21 @@ public class UsersService {
 
     private void mergeAttributes(UserEntity user, UserEntity userEntity) {
         if(userEntity != null) {
-            if(user.getAppUsageDuration() == null) {
-                user.setAppUsageDuration(userEntity.getAppUsageDuration());
-            } else {
+            if(user.getAppUsageDuration() != null && userEntity.getAppUsageDuration() != null) {
                 user.setAppUsageDuration(userEntity.getAppUsageDuration() + user.getAppUsageDuration());
             }
+            if(user.getAppUsageDuration() == null) {
+                user.setAppUsageDuration(userEntity.getAppUsageDuration());
+            }
+            if(user.getAge() == null) user.setAge(userEntity.getAge());
+            if(user.getUserName() == null) user.setUserName(userEntity.getUserName());
+            if(user.getPasswd() == null) user.setPasswd(userEntity.getPasswd());
+            if(user.getType() == null) user.setType(userEntity.getType());
+            if(user.getCreated() == null) user.setCreated(userEntity.getCreated());
+        } else {
+            // new user
+            user.setCreated(new Timestamp(new Date().getTime()));
         }
-        if(user.getAge() == null) user.setAge(userEntity.getAge());
-        if(user.getUserName() == null) user.setUserName(userEntity.getUserName());
-        if(user.getPasswd() == null) user.setPasswd(userEntity.getPasswd());
-        if(user.getType() == null) user.setType(userEntity.getType());
-        if(user.getCreated() == null) user.setCreated(userEntity.getCreated());
     }
 
     public Object addUsers(List<UserEntity> users) {

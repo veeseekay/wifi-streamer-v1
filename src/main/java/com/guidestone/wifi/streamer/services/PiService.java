@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,17 +24,19 @@ public class PiService {
 
     private void mergeAttributes(PiEntity pi, PiEntity piEntity) {
         if(piEntity != null) {
-
+            if(pi.getDownloads() != null && piEntity.getDownloads() != null) {
+                pi.setDownloads(pi.getDownloads() + piEntity.getDownloads());
+            }
             if(pi.getDownloads() == null) {
                 pi.setDownloads(piEntity.getDownloads());
-            } else {
-                if(piEntity.getDownloads() != null) {
-                    pi.setDownloads(pi.getDownloads() + piEntity.getDownloads());
-                }
             }
             if(pi.getActive() == null) pi.setActive(piEntity.getActive());
             if(pi.getLastChecked() == null) pi.setLastChecked(piEntity.getLastChecked());
             if(pi.getAddedOn() == null) pi.setAddedOn(piEntity.getAddedOn());
+        } else {
+            // new pi
+            pi.setAddedOn(new Timestamp(new Date().getTime()));
+            pi.setLastChecked(new Timestamp(new Date().getTime()));
         }
     }
 
