@@ -31,6 +31,10 @@ public class MediaService {
         return mediaRepository.findAll();
     }
 
+    public List<MediaEntity> findByMediaCategory(String category) {
+        return mediaRepository.findByMediaCategory(category);
+    }
+
     public Object addMedia(List<MediaEntity> media) {
         return mediaRepository.save(media);
     }

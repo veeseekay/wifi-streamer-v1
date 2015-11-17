@@ -5,6 +5,7 @@
         <class>com.guidestone.wifi.streamer.entities.AnalyticsEntity</class>
         <class>com.guidestone.wifi.streamer.entities.MediaEntity</class>
         <class>com.guidestone.wifi.streamer.entities.UserEntity</class>
+        <class>com.guidestone.wifi.streamer.entities.PiEntity</class>
         <properties>
             <property name="eclipselink.jdbc.url"
                       value="jdbc:mysql://wifistreamer.c9wpmmcixw9f.us-west-2.rds.amazonaws.com:3306/wifistreamer"/>

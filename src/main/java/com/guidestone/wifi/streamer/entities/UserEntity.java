@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user", schema = "", catalog = "wifistreamer")
@@ -14,6 +15,9 @@ public class UserEntity {
     private String passwd;
     private String type;
     private String age;
+    private Long appUsageDuration;
+    private Timestamp created;
+
 
     @Id
     @Column(name = "id")
@@ -65,6 +69,26 @@ public class UserEntity {
         this.type = type;
     }
 
+    @Basic
+    @Column(name = "usage_duration")
+    public Long getAppUsageDuration() {
+        return appUsageDuration;
+    }
+
+    public void setAppUsageDuration(Long appUsageDuration) {
+        this.appUsageDuration = appUsageDuration;
+    }
+
+    @Basic
+    @Column(name = "created_on")
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,5 +115,18 @@ public class UserEntity {
         result = 31 * result + (passwd != null ? passwd.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", passwd='" + passwd + '\'' +
+                ", type='" + type + '\'' +
+                ", age='" + age + '\'' +
+                ", appUsageDuration=" + appUsageDuration +
+                ", created=" + created +
+                '}';
     }
 }

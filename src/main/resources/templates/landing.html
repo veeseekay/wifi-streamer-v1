@@ -70,11 +70,9 @@
                     {"id":"","label":"Slices","pattern":"","type":"number"}
                 ],
                 "rows": [
-                    {"c":[{"v":"Technology","f":null},{"v":3,"f":null}]},
-                    {"c":[{"v":"Fiction","f":null},{"v":1,"f":null}]},
-                    {"c":[{"v":"Science","f":null},{"v":1,"f":null}]},
-                    {"c":[{"v":"Comedy","f":null},{"v":1,"f":null}]},
-                    {"c":[{"v":"Books","f":null},{"v":2,"f":null}]}
+                    {"c":[{"v":"TV","f":null},{"v":35,"f":null}]},
+                    {"c":[{"v":"Movies","f":null},{"v":15,"f":null}]},
+                    {"c":[{"v":"Video","f":null},{"v":9,"f":null}]}
                 ]
             };
 
@@ -83,17 +81,16 @@
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, {width: 400, height: 240});
-
+            chart.draw(data, {width: 1200, height: 300});
             var jsonData = {
                 "cols": [
                     {"id":"","label":"Topping","pattern":"","type":"string"},
                     {"id":"","label":"Slices","pattern":"","type":"number"}
                 ],
                 "rows": [
-                    {"c":[{"v":"Age 20-30","f":null},{"v":3,"f":null}]},
-                    {"c":[{"v":"Age 30-30","f":null},{"v":1,"f":null}]},
-                    {"c":[{"v":"Age 15-20","f":null},{"v":1,"f":null}]},
+                    {"c":[{"v":"Age 20-30","f":null},{"v":8,"f":null}]},
+                    {"c":[{"v":"Age 30-30","f":null},{"v":3,"f":null}]},
+                    {"c":[{"v":"Age 15-20","f":null},{"v":4,"f":null}]}
                 ]
             };
 
@@ -102,7 +99,28 @@
 
             // Instantiate and draw our chart, passing in some options.
             var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
-            chart1.draw(data, {width: 400, height: 240});
+            chart1.draw(data, {width: 1200, height: 300});
+
+            var jsonData = {
+                "cols": [
+                    {"id":"","label":"Topping","pattern":"","type":"string"},
+                    {"id":"","label":"Slices","pattern":"","type":"number"}
+                ],
+                "rows": [
+                    {"c":[{"v":"3D Animation Rock-A-Bye Baby English Nursery rhymes for children with lyrics.mp4","f":null},{"v":42,"f":null}]},
+                    {"c":[{"v":"3D Animation Three Blind Mice English Nursery Rhyme for children with lyrics.mp4","f":null},{"v":22,"f":null}]},
+                    {"c":[{"v":"3DAnimationThreeBlind.mp4","f":null},{"v":15,"f":null}]},
+                    {"c":[{"v":"SampleVideo_1080x720_1mb.mp4","f":null},{"v":8,"f":null}]},
+                    {"c":[{"v":"SampleVideo_1080x720_2mb.mp4","f":null},{"v":6,"f":null}]}
+                ]
+            };
+
+            // Create our data table out of JSON data loaded from server.
+            var data = new google.visualization.DataTable(jsonData);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart2 = new google.visualization.PieChart(document.getElementById('chart2_div'));
+            chart2.draw(data, {width: 1200, height: 300});
         }
 
     </script>
@@ -164,10 +182,17 @@
         <div id="analytics" class="tab-pane fade">
             <!--Div that will hold the pie chart-->
 
-            <div id="chart_div"></div>
+            <div align="center">
+                <div id="chart_div"></div>
+            </div>
             <br>
+            <div align="center">
+                <div id="chart1_div"></div>
+            </div>
             <br>
-            <div id="chart1_div"></div>
+            <div align="center">
+                <div id="chart2_div"></div>
+            </div>
         </div>
     </div>
 </div>

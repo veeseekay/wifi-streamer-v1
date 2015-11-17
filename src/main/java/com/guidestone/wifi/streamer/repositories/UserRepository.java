@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Double> {
 
-    UserEntity findById(String id);
+    UserEntity findById(Double id);
 
     Page<UserEntity> findAll(Pageable pageable);
 

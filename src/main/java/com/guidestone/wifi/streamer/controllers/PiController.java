@@ -1,15 +1,12 @@
 package com.guidestone.wifi.streamer.controllers;
 
-import com.guidestone.wifi.streamer.entities.UserEntity;
-import com.guidestone.wifi.streamer.services.UsersService;
+import com.guidestone.wifi.streamer.entities.PiEntity;
+import com.guidestone.wifi.streamer.services.PiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,37 +23,34 @@ import java.util.List;
 
 //@EnableWebMvc
 @RestController
-@RequestMapping("/api/wifistreamer/v1/users")
+@RequestMapping("/api/wifistreamer/v1/pi")
 @EnableAutoConfiguration
 @ComponentScan
-public class UsersController {
+public class PiController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UsersController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PiController.class);
     @Autowired
-    UsersService usersService;
+    PiService piService;
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addUsers(@RequestHeader HttpHeaders headers, @RequestBody List<UserEntity> users) throws Exception {
+    public ResponseEntity<?> addPis(@RequestHeader HttpHeaders headers, @RequestBody List<PiEntity> pis) throws Exception {
 
-        LOG.debug("Users to add {}", users);
-        return new ResponseEntity<>(usersService.addUsers(users), HttpStatus.OK);
+        LOG.debug("Pi to add {}", pis);
+        return new ResponseEntity<>(piService.addPis(pis), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUsers(@RequestHeader HttpHeaders headers,
-            Pageable pageable, PagedResourcesAssembler assembler) throws Exception {
-
-        Page<UserEntity> users = usersService.getUsers(pageable);
-        return new ResponseEntity<>(assembler.toResource(users), HttpStatus.OK);
+    public ResponseEntity<?> getPis(@RequestHeader HttpHeaders headers) throws Exception {
+        return new ResponseEntity<>(piService.getPis(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUser(@RequestHeader HttpHeaders headers, @PathVariable Double id) throws Exception {
-        return new ResponseEntity<>(usersService.getUser(id), HttpStatus.OK);
+    public ResponseEntity<?> getPi(@RequestHeader HttpHeaders headers, @PathVariable String id) throws Exception {
+        return new ResponseEntity<>(piService.getPi(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addUser(@RequestHeader HttpHeaders headers, @RequestBody UserEntity user) throws Exception {
-        return new ResponseEntity<>(usersService.addUser(user), HttpStatus.OK);
+    public ResponseEntity<?> addPi(@RequestHeader HttpHeaders headers, @RequestBody PiEntity pi) throws Exception {
+        return new ResponseEntity<>(piService.addPi(pi), HttpStatus.OK);
     }
 }
