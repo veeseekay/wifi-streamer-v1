@@ -1,5 +1,7 @@
 package com.guidestone.wifi.streamer.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ public class UserEntity {
     private String type;
     private String age;
     private Long appUsageDuration;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSSSSS")
     private Timestamp created;
 
 
