@@ -56,4 +56,16 @@ public class AnalyticsController {
 
         return new ResponseEntity<>(analyticsService.addAnalytics(analytics), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/categorycount", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> fetchMediaCategoryCount(@RequestHeader HttpHeaders headers) throws Exception {
+
+        return new ResponseEntity<>(analyticsService.fetchMediaCategoryCount(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/topviewed", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> fetchTopViewedMedia(@RequestHeader HttpHeaders headers) throws Exception {
+
+        return new ResponseEntity<>(analyticsService.fetchTopViewedMedia(), HttpStatus.OK);
+    }
 }
