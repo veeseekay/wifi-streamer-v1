@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Generated;
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ import java.util.Map;
         "rows"
 })
 public class GraphData {
+
+    private static final Logger LOG = LoggerFactory.getLogger(GraphData.class);
+
 
     @JsonProperty("cols")
     private List<Col> cols = new ArrayList<Col>();
@@ -78,4 +83,29 @@ public class GraphData {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+
+        StringBuilder graphData = new StringBuilder("{\"cols\": [");
+        for (Col col : cols) {
+            graphData.append(col.toString()).append(",");
+        }
+        if (graphData.length() > 0 && graphData.charAt(graphData.length()-1)==',') {
+            graphData = new StringBuilder(graphData.substring(0, graphData.length()-1));
+        }
+        graphData.append("],");
+        LOG.info("graph data cols is {}", graphData);
+
+        graphData.append("\"rows\": [");
+        for (Row row : rows) {
+            graphData.append(row.toString()).append(",");
+        }
+        if (graphData.length() > 0 && graphData.charAt(graphData.length()-1)==',') {
+            graphData = new StringBuilder(graphData.substring(0, graphData.length()-1));
+        }
+        graphData.append("]}");
+        LOG.info("graph data rows and cols is {}", graphData);
+
+        return graphData.toString();
+    }
 }

@@ -1,5 +1,6 @@
 package com.guidestone.wifi.streamer.controllers;
 
+import com.guidestone.wifi.streamer.domain.GraphData;
 import com.guidestone.wifi.streamer.entities.AnalyticsEntity;
 import com.guidestone.wifi.streamer.services.AnalyticsService;
 import org.slf4j.Logger;
@@ -58,14 +59,18 @@ public class AnalyticsController {
     }
 
     @RequestMapping(value = "/categorycount", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> fetchMediaCategoryCount(@RequestHeader HttpHeaders headers) throws Exception {
+    public String fetchMediaCategoryCount(@RequestHeader HttpHeaders headers) throws Exception {
 
-        return new ResponseEntity<>(analyticsService.fetchMediaCategoryCount(), HttpStatus.OK);
+        GraphData gd = analyticsService.fetchMediaCategoryCount();
+        LOG.info("GraphData in category count {}", gd);
+        return gd.toString();
     }
 
     @RequestMapping(value = "/topviewed", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> fetchTopViewedMedia(@RequestHeader HttpHeaders headers) throws Exception {
+    public String fetchTopViewedMedia(@RequestHeader HttpHeaders headers) throws Exception {
 
-        return new ResponseEntity<>(analyticsService.fetchTopViewedMedia(), HttpStatus.OK);
+        GraphData gd = analyticsService.fetchTopViewedMedia();
+        LOG.info("GraphData in top viewed media {}", gd);
+        return gd.toString();
     }
 }

@@ -122,4 +122,8 @@ public class Col {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "{\"label\":\"" + label + "\",\"type\":\"" + type + "\"}";
+    }
 }

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Generated;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ import java.util.Map;
         "f"
 })
 public class C {
+
+    private static final Logger LOG = LoggerFactory.getLogger(C.class);
 
     @JsonProperty("v")
     private String v;
@@ -76,4 +80,16 @@ public class C {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        String c = null;
+        try {
+            int value = Integer.parseInt(v);
+            c = "{\"v\":" + v + ",\"f\":null}";
+        } catch (NumberFormatException e) {
+            c = "{\"v\":\"" + v + "\",\"f\":null}";
+        }
+        LOG.info("C is {}", c);
+        return c;
+    }
 }
