@@ -16,10 +16,12 @@ public interface AnalyticsRepository extends JpaRepository<AnalyticsEntity, Long
 
     Page<AnalyticsEntity> findByUserId(Integer userId, Pageable pageable);
 
+    AnalyticsEntity findByUserIdAndMediaId(Integer userId, Integer mediaId);
+
     @Query(value = "select  count(m.id), m.media_category from media m GROUP BY m.media_category", nativeQuery = true)
     List<Object[]> fetchMediaCategoryCount();
 
-
-    @Query(value = "select media.title, analytics.views from media media, analytics analytics where media.id=analytics.media_id limit 5", nativeQuery = true)
+    @Query(value = "select media.title as title, analytics.views as views from media media, " +
+            "analytics analytics where media.id=analytics.media_id order by views desc limit 5;", nativeQuery = true)
     List<Object[]> fetchTopViewedMedia();
 }

@@ -13,8 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,8 +36,24 @@ public class AnalyticsService {
         return analyticsRepository.findByUserId(userId, pageable);
     }
 
-    public Object addAnalytics(List<AnalyticsEntity> analytics) {
-        return analyticsRepository.save(analytics);
+    public Object addAnalytics(List<AnalyticsEntity> reqAnalytics) {
+        return analyticsRepository.save(reqAnalytics);
+    }
+
+    public Object addAnalyticData(AnalyticsEntity reqAnalytics) {
+
+        AnalyticsEntity analyticsEntity = analyticsRepository.findByUserIdAndMediaId(
+                reqAnalytics.getUserId(), reqAnalytics.getMediaId());
+
+        if(analyticsEntity != null) {
+            analyticsEntity.setViews(reqAnalytics.getViews() + analyticsEntity.getViews());
+            analyticsEntity.setLastViewed(new Timestamp(new Date().getTime()));
+            analyticsEntity.setLastViewDurationSeconds(reqAnalytics.getLastViewDurationSeconds());
+            return analyticsRepository.save(analyticsEntity);
+        } else {
+            reqAnalytics.setLastViewed(new Timestamp(new Date().getTime()));
+            return analyticsRepository.save(reqAnalytics);
+        }
     }
 
     public GraphData fetchMediaCategoryCount() {

@@ -53,7 +53,7 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
-        function request() {
+        function category_count() {
             var result="";
             $.ajax({
                 type : "GET",
@@ -75,6 +75,28 @@
             return result;
         };
 
+        function top_viewed() {
+            var result="";
+            $.ajax({
+                type : "GET",
+                url : "http://localhost:8080/api/wifistreamer/v1/analytics/topviewed",
+                datatype : "application/json",
+                contentType: "application/json",
+                async: false,
+                success : function (data) {
+                    result = data;
+                    console.log("Successfully queried topviewed!");
+                    <!--console.log(result);-->
+                    $('body').data('topviewed',data);
+                },
+
+                error : function (data) {
+                    console.log("An error occurred");
+                },
+            })
+            return result;
+        };
+
 
         // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
@@ -83,7 +105,7 @@
         google.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var jsonData = request();
+            var jsonData = category_count();
             parsedJsonData = JSON.parse(jsonData);
 
             // Create our data table out of JSON data loaded from server.
@@ -111,22 +133,11 @@
             var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
             chart1.draw(data, {width: 1200, height: 300});
 
-            var jsonData = {
-                "cols": [
-                    {"id":"","label":"Topping","pattern":"","type":"string"},
-                    {"id":"","label":"Slices","pattern":"","type":"number"}
-                ],
-                "rows": [
-                    {"c":[{"v":"3D Animation Rock-A-Bye Baby English Nursery rhymes for children with lyrics.mp4","f":null},{"v":42,"f":null}]},
-                    {"c":[{"v":"3D Animation Three Blind Mice English Nursery Rhyme for children with lyrics.mp4","f":null},{"v":22,"f":null}]},
-                    {"c":[{"v":"3DAnimationThreeBlind.mp4","f":null},{"v":15,"f":null}]},
-                    {"c":[{"v":"SampleVideo_1080x720_1mb.mp4","f":null},{"v":8,"f":null}]},
-                    {"c":[{"v":"SampleVideo_1080x720_2mb.mp4","f":null},{"v":6,"f":null}]}
-                ]
-            };
+            var jsonData = top_viewed();
+            parsedJsonData = JSON.parse(jsonData);
 
             // Create our data table out of JSON data loaded from server.
-            var data = new google.visualization.DataTable(jsonData);
+            var data = new google.visualization.DataTable(parsedJsonData);
 
             // Instantiate and draw our chart, passing in some options.
             var chart2 = new google.visualization.PieChart(document.getElementById('chart2_div'));

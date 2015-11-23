@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 
 //@EnableWebMvc
 @RestController
@@ -53,9 +51,9 @@ public class AnalyticsController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addMediaAnalytics(@RequestHeader HttpHeaders headers, @RequestBody List<AnalyticsEntity> analytics) throws Exception {
+    public ResponseEntity<?> addMediaAnalytics(@RequestHeader HttpHeaders headers, @RequestBody AnalyticsEntity analytics) throws Exception {
 
-        return new ResponseEntity<>(analyticsService.addAnalytics(analytics), HttpStatus.OK);
+        return new ResponseEntity<>(analyticsService.addAnalyticData(analytics), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/categorycount", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
