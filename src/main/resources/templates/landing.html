@@ -133,7 +133,7 @@
             var data = new google.visualization.DataTable(parsedJsonData);
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, {width: 1200, height: 300});
+            chart.draw(data, {width: 1200, height: 300, title: 'Media count by category'});
 
             var jsonData = media_views();
             parsedJsonData = JSON.parse(jsonData);
@@ -141,7 +141,7 @@
             var data = new google.visualization.DataTable(parsedJsonData);
             // Instantiate and draw our chart, passing in some options.
             var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
-            chart1.draw(data, {width: 1200, height: 300});
+            chart1.draw(data, {width: 1200, height: 300, title: 'Media views by category'});
 
             var jsonData = top_viewed();
             parsedJsonData = JSON.parse(jsonData);
@@ -149,7 +149,7 @@
             var data = new google.visualization.DataTable(parsedJsonData);
             // Instantiate and draw our chart, passing in some options.
             var chart2 = new google.visualization.PieChart(document.getElementById('chart2_div'));
-            chart2.draw(data, {width: 1200, height: 300});
+            chart2.draw(data, {width: 1200, height: 300, title: 'Top viewed media'});
         }
 
     </script>
