@@ -9,7 +9,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableAsync
+@EnableScheduling
 @Configuration
 @EnableAutoConfiguration(exclude = {JacksonAutoConfiguration.class})
 public class StreamerConfiguration {

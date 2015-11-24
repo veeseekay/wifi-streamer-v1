@@ -7,6 +7,7 @@ import com.guidestone.wifi.streamer.repositories.PiRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,12 +31,13 @@ public class PiService {
             if(pi.getDownloads() == null) {
                 pi.setDownloads(piEntity.getDownloads());
             }
-            if(pi.getActive() == null) pi.setActive(piEntity.getActive());
-            if(pi.getLastChecked() == null) pi.setLastChecked(piEntity.getLastChecked());
+            if(pi.getActive() == null) pi.setActive(1);
+            if(pi.getLastChecked() == null) pi.setLastChecked(new Timestamp(new Date().getTime()));
             if(pi.getAddedOn() == null) pi.setAddedOn(piEntity.getAddedOn());
         } else {
             // new pi
             pi.setAddedOn(new Timestamp(new Date().getTime()));
+            pi.setActive(1);
             pi.setLastChecked(new Timestamp(new Date().getTime()));
         }
     }
@@ -66,5 +68,19 @@ public class PiService {
             throw new StreamerException("Pi not found").setType(ExceptionType.NOT_FOUND);
         }
         return pi;
+    }
+
+
+    @Scheduled(cron = "${pi.cron.expression}")
+    public void checkPiStatus() {
+        LOG.info("Scheduled run for pi status check started");
+        List<PiEntity> pis = piRepository.findAll();
+        for(PiEntity pi : pis) {
+            LOG.info("time stamp is {} = {}", pi.getLastChecked(), pi.getActive());
+            if((new Date().getTime() - pi.getLastChecked().getTime()) > 86400000) {
+                pi.setActive(0);
+                piRepository.save(pi);
+            }
+        }
     }
 }
