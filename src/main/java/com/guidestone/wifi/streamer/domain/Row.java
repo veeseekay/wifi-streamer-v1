@@ -69,7 +69,7 @@ public class Row {
             row = new StringBuilder(row.substring(0, row.length()-1));
         }
         row.append("]}");
-        LOG.info("Row is {}", row.toString());
+        //LOG.info("Row is {}", row.toString());
         return row.toString();
     }
 }

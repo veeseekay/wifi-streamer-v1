@@ -71,4 +71,12 @@ public class AnalyticsController {
         LOG.info("GraphData in top viewed media {}", gd);
         return gd.toString();
     }
+
+    @RequestMapping(value = "/viewsbymedia", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String fetchViewsByMedia(@RequestHeader HttpHeaders headers) throws Exception {
+
+        GraphData gd = analyticsService.fetchViewsByMedia();
+        LOG.info("GraphData in views by media {}", gd);
+        return gd.toString();
+    }
 }

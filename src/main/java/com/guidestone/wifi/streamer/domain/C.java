@@ -89,7 +89,7 @@ public class C {
         } catch (NumberFormatException e) {
             c = "{\"v\":\"" + v + "\",\"f\":null}";
         }
-        LOG.info("C is {}", c);
+        //LOG.info("C is {}", c);
         return c;
     }
 }

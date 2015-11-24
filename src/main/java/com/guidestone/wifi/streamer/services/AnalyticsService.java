@@ -84,6 +84,21 @@ public class AnalyticsService {
         return graphData;
     }
 
+   public GraphData fetchViewsByMedia() {
+       GraphData graphData = new GraphData();
+       List<Row> rows = new ArrayList<>();
+       graphData.setCols(getCols());
+       List<Object[]> viewsByMedia = analyticsRepository.fetchViewsByMedia();
+       for(Object[] o : viewsByMedia) {
+           LOG.info("viewsByMedia is {}", o);
+           Row row = getRow(String.valueOf(o[1]), String.valueOf(o[0]));
+           rows.add(row);
+       }
+       graphData.setRows(rows);
+       return graphData;
+   }
+
+
     private List<Col> getCols() {
         return Arrays.asList(new Col[]{getCol("Topping", "string"), getCol("Slices", "number")});
     }

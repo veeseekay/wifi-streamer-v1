@@ -97,6 +97,28 @@
             return result;
         };
 
+        function media_views() {
+            var result="";
+            $.ajax({
+                type : "GET",
+                url : "http://localhost:8080/api/wifistreamer/v1/analytics/viewsbymedia",
+                datatype : "application/json",
+                contentType: "application/json",
+                async: false,
+                success : function (data) {
+                    result = data;
+                    console.log("Successfully queried viewsbymedia!");
+                    <!--console.log(result);-->
+                    $('body').data('viewsbymedia',data);
+                },
+
+                error : function (data) {
+                    console.log("An error occurred");
+                },
+            })
+            return result;
+        };
+
 
         // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
@@ -107,38 +129,24 @@
         function drawChart() {
             var jsonData = category_count();
             parsedJsonData = JSON.parse(jsonData);
-
             // Create our data table out of JSON data loaded from server.
             var data = new google.visualization.DataTable(parsedJsonData);
-
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
             chart.draw(data, {width: 1200, height: 300});
-            var jsonData = {
-                "cols": [
-                    {"id":"","label":"Topping","pattern":"","type":"string"},
-                    {"id":"","label":"Slices","pattern":"","type":"number"}
-                ],
-                "rows": [
-                    {"c":[{"v":"Age 20-30","f":null},{"v":8,"f":null}]},
-                    {"c":[{"v":"Age 30-30","f":null},{"v":3,"f":null}]},
-                    {"c":[{"v":"Age 15-20","f":null},{"v":4,"f":null}]}
-                ]
-            };
 
+            var jsonData = media_views();
+            parsedJsonData = JSON.parse(jsonData);
             // Create our data table out of JSON data loaded from server.
-            var data = new google.visualization.DataTable(jsonData);
-
+            var data = new google.visualization.DataTable(parsedJsonData);
             // Instantiate and draw our chart, passing in some options.
             var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
             chart1.draw(data, {width: 1200, height: 300});
 
             var jsonData = top_viewed();
             parsedJsonData = JSON.parse(jsonData);
-
             // Create our data table out of JSON data loaded from server.
             var data = new google.visualization.DataTable(parsedJsonData);
-
             // Instantiate and draw our chart, passing in some options.
             var chart2 = new google.visualization.PieChart(document.getElementById('chart2_div'));
             chart2.draw(data, {width: 1200, height: 300});

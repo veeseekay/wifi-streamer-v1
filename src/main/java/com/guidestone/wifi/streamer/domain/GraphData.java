@@ -94,7 +94,7 @@ public class GraphData {
             graphData = new StringBuilder(graphData.substring(0, graphData.length()-1));
         }
         graphData.append("],");
-        LOG.info("graph data cols is {}", graphData);
+        //LOG.info("graph data cols is {}", graphData);
 
         graphData.append("\"rows\": [");
         for (Row row : rows) {
@@ -104,7 +104,7 @@ public class GraphData {
             graphData = new StringBuilder(graphData.substring(0, graphData.length()-1));
         }
         graphData.append("]}");
-        LOG.info("graph data rows and cols is {}", graphData);
+        //LOG.info("graph data rows and cols is {}", graphData);
 
         return graphData.toString();
     }

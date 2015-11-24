@@ -24,4 +24,8 @@ public interface AnalyticsRepository extends JpaRepository<AnalyticsEntity, Long
     @Query(value = "select media.title as title, analytics.views as views from media media, " +
             "analytics analytics where media.id=analytics.media_id order by views desc limit 5;", nativeQuery = true)
     List<Object[]> fetchTopViewedMedia();
+
+    @Query(value = "select sum(views) as views, media_category as category from media, analytics " +
+            "where media.id=analytics.media_id GROUP BY media.media_category", nativeQuery = true)
+    List<Object[]> fetchViewsByMedia();
 }
