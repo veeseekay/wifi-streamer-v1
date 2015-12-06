@@ -1,6 +1,8 @@
 package com.guidestone.wifi.streamer.controllers;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.guidestone.wifi.streamer.entities.MediaEntity;
@@ -75,9 +77,12 @@ public class FileUploadController {
 
                         fileInputStream = file.getInputStream();
                         TransferManager transferManager = new TransferManager(this.amazonS3);
-                        Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
-                        LOG.info(upload.waitForUploadResult().getBucketName());
+                        //Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
 
+                        Upload upload = transferManager.upload(
+                                new PutObjectRequest(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null)
+                                        .withCannedAcl(CannedAccessControlList.PublicRead));
+                        LOG.info(upload.waitForUploadResult().getBucketName());
 
                         mediaEntities.add(mediaEntity);
                         LOG.info("successfully uploaded " + file.getName() + "!");
