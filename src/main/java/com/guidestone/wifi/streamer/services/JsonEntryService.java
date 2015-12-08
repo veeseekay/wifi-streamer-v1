@@ -1,8 +1,9 @@
 package com.guidestone.wifi.streamer.services;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.transfer.TransferManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guidestone.wifi.streamer.domain.MediaUpdates;
 import com.guidestone.wifi.streamer.entities.MediaEntity;
@@ -78,10 +79,15 @@ public class JsonEntryService {
             mapper.writeValue(file, mediaUpdates);
 
             LOG.debug("Uploading a new object to S3 from a file\n");
-            PutObjectResult result = amazonS3.putObject(new PutObjectRequest(
-                    bucket, "updates.json", file));
+            /* PutObjectResult result = amazonS3.putObject(new PutObjectRequest(
+                    bucket, "updates.json", file)); */
 
-            LOG.info(result.getETag());
+            TransferManager transferManager = new TransferManager(this.amazonS3);
+
+            transferManager.upload(new PutObjectRequest(bucket, "updates.json", file)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            // LOG.info(result.getETag());
 
         } catch (Exception e) {
             LOG.error("Exception in async json create", e);
