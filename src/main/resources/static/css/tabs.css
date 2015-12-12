@@ -1,4 +1,19 @@
 /* Transparent Tabs */
+#select-div select {
+    display:none;
+}
+
+#select-div.tech #videos {
+    display:block;
+}
+
+#select-div.non-tech #tv {
+    display:block;
+}
+
+#select-div.non-tech1 #movies {
+    display:block;
+}
 
 .nav-tabs {
     list-style: none;

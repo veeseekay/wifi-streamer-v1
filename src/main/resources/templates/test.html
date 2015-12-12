@@ -1,0 +1,70 @@
+<link href="../static/css/tabs.css" rel="stylesheet"/>
+<script>
+    window.onload = function() {
+        var techButton = document.getElementById('radio-techy');
+
+        var nonTechButton = document.getElementById('radio-non-techy');
+
+        techButton.onclick = function () {
+            document.getElementById('select-div').className = 'tech';
+        }
+        nonTechButton.onclick = function () {
+            document.getElementById('select-div').className = 'non-tech';
+        }
+    }
+</script>
+<table>
+    <tr>
+        <td>Category:</td>
+        <td>
+            <input id="radio-techy" type="radio" name="category" value="1" checked="yes" />Technical
+            <input id="radio-non-techy" type="radio" name="category" value="2" />Non-technical
+        </td>
+    </tr>
+    <tr>
+        <td>Branch</td>
+        <td>
+            <div id="select-div" class="tech">
+                <select id="techy">
+                    <option>Hardware</option>
+                    <option>Networking</option>
+                    <option>Linux</option>
+                </select>
+                <select id="non-techy">
+                    <option>English</option>
+                    <option>History</option>
+                    <option>Maths</option>
+                </select>
+            </div>
+        </td>
+    </tr>
+
+
+    -----------
+
+
+    <tr>
+        <td>Category:</td>
+        <td>
+            <input id="radio-techy" type="radio" name="category" value="1" checked="yes" />Technical
+            <input id="radio-non-techy" type="radio" name="category" value="2" />Non-technical
+        </td>
+    </tr>
+    <tr>
+        <td>Branch</td>
+        <td>
+            <div id="select-div" class="tech">
+                <select id="techy">
+                    <option>Hardware</option>
+                    <option>Networking</option>
+                    <option>Linux</option>
+                </select>
+                <select id="non-techy">
+                    <option>English</option>
+                    <option>History</option>
+                    <option>Maths</option>
+                </select>
+            </div>
+        </td>
+    </tr>
+</table>

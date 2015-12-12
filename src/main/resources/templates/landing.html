@@ -1,33 +1,24 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<link href="../static/tabs.css" rel="stylesheet"/>
+<link type="text/css" href="css/tabs.css" rel="stylesheet"/>
 <head>
     <title>Upload media</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>
-        $(document)
-                .ready(
-                function() {
-                    //add more file components if Add is clicked
-                    $('#addFile')
-                            .click(
-                            function() {
-                                var fileIndex = $('#fileTable tr')
-                                                .children().length - 1;
-                                $('#fileTable')
-                                        .append(
-                                        '<tr><td><br>'
-                                        + ' Language: <input type="text" name="language['+ fileIndex +']">'
-                                        + ' Genre: <input type="text" name="genre['+ fileIndex +']">'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="videos"> video'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="movies"> movie'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="audios"> audio'
-                                        + ' <INPUT TYPE="radio" NAME="radios[' + fileIndex +']" VALUE="tv"> tv'
-                                        + '<input type="file" name="files['+ fileIndex +']" />'
-                                        + '</td></tr>');
-                            });
-
-                });
+        window.onload = function() {
+            var videosButton = document.getElementById('radio-videos');
+            var moviesButton = document.getElementById('radio-movies');
+            var tvButton = document.getElementById('radio-tv');
+            videosButton.onclick = function () {
+                document.getElementById('select-div').className = 'tech';
+            }
+            moviesButton.onclick = function () {
+                document.getElementById('select-div').className = 'non-tech1';
+            }
+            tvButton.onclick = function () {
+                document.getElementById('select-div').className = 'non-tech';
+            }
+        }
     </script>
     <script>
         $(function(){
@@ -161,8 +152,9 @@
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
         <li><a data-toggle="tab" href="#analytics">Analytics</a></li>
+
         <ul class="nav navbar-nav navbar-right">
-            <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">Logout</a>
+            <li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"><span class="glyphicon glyphicon-log-out"></span></a></li>
         </ul>
     </ul>
 
@@ -178,32 +170,38 @@
                     <table id="fileTable">
                         <tr>
                             <td>
-                                <br>
-                                Language: <input type="text" name="language[0]">
-                                Genre: <input type="text" name="genre[0]">
-                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="videos"> video
-                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="movies"> movie
-                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="audios"> audio
-                                <INPUT TYPE="radio" NAME="radios[0]" VALUE="tv"> tv
+                                <INPUT id="radio-videos" TYPE="radio" NAME="radios[0]" VALUE="videos" checked="checked"> Videos
+                                <INPUT id="radio-movies" TYPE="radio" NAME="radios[0]" VALUE="movies"> Movies
+                                <INPUT id="radio-tv" TYPE="radio" NAME="radios[0]" VALUE="tv"> Your TV
+                                <div id="select-div" class="tech">
+                                    <select id="videos" name="videos">
+                                        <option>Geeky</option>
+                                        <option>Viral</option>
+                                        <option>Tourism</option>
+                                        <option>Motivational</option>
+                                        <option>Politics</option>
+                                    </select>
+                                    <select id="movies" name="movies">
+                                        <option>English</option>
+                                        <option>Hindi</option>
+                                        <option>Tamil</option>
+                                        <option>Telugu</option>
+                                    </select>
+                                    <select id="tv" name="tv">
+                                        <option>TV Shows</option>
+                                        <option>Songs</option>
+                                        <option>Short Films</option>
+                                        <option>Comedy</option>
+                                        <option>Movie Trailers</option>
+                                    </select>
+                                </div>
                                 <input name="files[0]" type="file" />
-                                <br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Language: <input type="text" name="language[1]">
-                                Genre: <input type="text" name="genre[1]">
-                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="videos"> video
-                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="movies"> movie
-                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="audios"> audio
-                                <INPUT TYPE="radio" NAME="radios[1]" VALUE="tv"> tv
-                                <input name="files[1]" type="file" />
                             </td>
                         </tr>
                     </table>
                     <br>
                     <input type="submit" value="Upload" />
-                    <input id="addFile" type="button" value="Add File" />
+                    <!-- input id="addFile" type="button" value="Add File" /-->
                 </form>
                 <br />
             </div>

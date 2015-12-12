@@ -13,6 +13,11 @@ public class MediaUpload {
 
     private List<String> genre;
 
+    private String movies;
+
+    private String tv;
+
+    private String videos;
 
     public List<MultipartFile> getFiles() {
         return media;
@@ -44,5 +49,29 @@ public class MediaUpload {
 
     public void setRadios(List<String> radios) {
         this.radios = radios;
+    }
+
+    public String getMovies() {
+        return movies;
+    }
+
+    public void setMovies(String movies) {
+        this.movies = movies;
+    }
+
+    public String getTv() {
+        return tv;
+    }
+
+    public void setTv(String tv) {
+        this.tv = tv;
+    }
+
+    public String getVideos() {
+        return videos;
+    }
+
+    public void setVideos(String videos) {
+        this.videos = videos;
     }
 }

@@ -49,10 +49,12 @@ public class FileUploadController {
         List<MediaEntity> mediaEntities = new ArrayList<>();
         List<MultipartFile> crunchifyFiles = uploadForm.getFiles();
         List<String> radios = uploadForm.getRadios();
-        List<String> genre = uploadForm.getGenre();
-        List<String> language = uploadForm.getLanguage();
+        String movies = uploadForm.getMovies();
+        String tv = uploadForm.getTv();
+        String videos = uploadForm.getVideos();
 
         LOG.info("size {}", crunchifyFiles.size());
+        LOG.info("mov {}, tv {}, vid  {}", movies, tv, videos);
 
         int i = 0;
 
@@ -61,16 +63,19 @@ public class FileUploadController {
 
                 String fileName = file.getOriginalFilename();
                 LOG.info("filename {}", fileName);
-                LOG.info("language {}", language.get(i));
-                LOG.info("genre {}", genre.get(i));
 
                 if (!file.isEmpty()) {
                     InputStream fileInputStream = null;
                     try {
 
                         MediaEntity mediaEntity = new MediaEntity();
-                        mediaEntity.setMediaGenre(language.get(i));
-                        mediaEntity.setMediaGenre(genre.get(i));
+                        if("tv".equalsIgnoreCase(radios.get(i))) {
+                            mediaEntity.setMediaGenre(tv);
+                        } else if("movies".equalsIgnoreCase(radios.get(i))){
+                            mediaEntity.setMediaGenre(movies);
+                        } else {
+                            mediaEntity.setMediaGenre(videos);
+                        }
                         mediaEntity.setMediaLocation(bucket + "/" + radios.get(i) + "/" + file.getOriginalFilename());
                         mediaEntity.setTitle(file.getOriginalFilename());
                         mediaEntity.setMediaCategory(radios.get(i));
