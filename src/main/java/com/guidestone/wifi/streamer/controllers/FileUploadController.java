@@ -56,56 +56,59 @@ public class FileUploadController {
         LOG.info("size {}", crunchifyFiles.size());
         LOG.info("mov {}, tv {}, vid  {}", movies, tv, videos);
 
-        int i = 0;
+        if (null != crunchifyFiles && crunchifyFiles.get(0) != null) {
 
-        if (null != crunchifyFiles && crunchifyFiles.size() > 0) {
-            for (MultipartFile file : crunchifyFiles) {
+            String fileName = crunchifyFiles.get(0).getOriginalFilename();
+            LOG.info("filename {}", fileName);
 
-                String fileName = file.getOriginalFilename();
-                LOG.info("filename {}", fileName);
+            if (!crunchifyFiles.get(0).isEmpty()) {
+                InputStream fileInputStream = null;
+                try {
 
-                if (!file.isEmpty()) {
-                    InputStream fileInputStream = null;
+                    MediaEntity mediaEntity = new MediaEntity();
+                    if ("tv".equalsIgnoreCase(radios.get(0))) {
+                        mediaEntity.setMediaGenre(tv);
+                    } else if ("movies".equalsIgnoreCase(radios.get(0))) {
+                        mediaEntity.setMediaGenre(movies);
+                    } else {
+                        mediaEntity.setMediaGenre(videos);
+                    }
+                    mediaEntity.setMediaLocation(bucket + "/" + radios.get(0) + "/" + crunchifyFiles.get(0).getOriginalFilename());
+                    if(crunchifyFiles.get(1) != null && !crunchifyFiles.get(1).isEmpty()) {
+                        LOG.info("cover image {}", crunchifyFiles.get(1).getOriginalFilename());
+                        mediaEntity.setCoverImageLocation(bucket + "/" + radios.get(0) + "/" + crunchifyFiles.get(1).getOriginalFilename());
+                    }
+                    mediaEntity.setTitle(crunchifyFiles.get(0).getOriginalFilename());
+                    mediaEntity.setMediaCategory(radios.get(0));
+
+                    fileInputStream = crunchifyFiles.get(0).getInputStream();
+                    TransferManager transferManager = new TransferManager(this.amazonS3);
+
+                    transferManager.upload(
+                            new PutObjectRequest(bucket, radios.get(0) + "/" + crunchifyFiles.get(1).getOriginalFilename(), fileInputStream, null)
+                                    .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                    Upload upload = transferManager.upload(
+                            new PutObjectRequest(bucket, radios.get(0) + "/" + crunchifyFiles.get(0).getOriginalFilename(), fileInputStream, null)
+                                    .withCannedAcl(CannedAccessControlList.PublicRead));
+                    LOG.info(upload.waitForUploadResult().getBucketName());
+
+                    mediaEntities.add(mediaEntity);
+                    LOG.info("successfully uploaded " + crunchifyFiles.get(0).getName() + "!");
+
+                } catch (Exception e) {
+                    LOG.info("failed to upload " + crunchifyFiles.get(0).getName() + " => " + e.getMessage());
+                } finally {
                     try {
-
-                        MediaEntity mediaEntity = new MediaEntity();
-                        if("tv".equalsIgnoreCase(radios.get(i))) {
-                            mediaEntity.setMediaGenre(tv);
-                        } else if("movies".equalsIgnoreCase(radios.get(i))){
-                            mediaEntity.setMediaGenre(movies);
-                        } else {
-                            mediaEntity.setMediaGenre(videos);
+                        if (null != fileInputStream) {
+                            fileInputStream.close();
                         }
-                        mediaEntity.setMediaLocation(bucket + "/" + radios.get(i) + "/" + file.getOriginalFilename());
-                        mediaEntity.setTitle(file.getOriginalFilename());
-                        mediaEntity.setMediaCategory(radios.get(i));
-
-                        fileInputStream = file.getInputStream();
-                        TransferManager transferManager = new TransferManager(this.amazonS3);
-                        //Upload upload = transferManager.upload(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null);
-
-                        Upload upload = transferManager.upload(
-                                new PutObjectRequest(bucket, radios.get(i) + "/" + file.getOriginalFilename(), fileInputStream, null)
-                                        .withCannedAcl(CannedAccessControlList.PublicRead));
-                        LOG.info(upload.waitForUploadResult().getBucketName());
-
-                        mediaEntities.add(mediaEntity);
-                        LOG.info("successfully uploaded " + file.getName() + "!");
-
-                    } catch (Exception e) {
-                        LOG.info("failed to upload " + file.getName() + " => " + e.getMessage());
-                    } finally {
-                        try {
-                            if(null != fileInputStream) {
-                                fileInputStream.close();
-                            }
-                        } catch (IOException e) {
-                            LOG.info("failed to close input stream ");
-                        }
+                    } catch (IOException e) {
+                        LOG.info("failed to close input stream ");
                     }
                 }
             }
-            i++;
+
             mediaService.addMedia(mediaEntities);
             LOG.info("calling async");
             jsonEntryService.updateMediaJson();
